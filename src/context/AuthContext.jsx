@@ -16,12 +16,12 @@ export function AuthProvider({ children }) {
 
       if (token && savedUser) {
         try {
-          // Verify token is still valid by fetching current user
-          const response = await authAPI.getCurrentUser();
-          setUser(response.data);
+          // Use saved user data instead of making API call
+          const parsedUser = JSON.parse(savedUser);
+          setUser(parsedUser);
           setIsAuthenticated(true);
         } catch (error) {
-          // Token is invalid, clear storage
+          // Invalid saved data, clear storage
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           setUser(null);

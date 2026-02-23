@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { LogOut, Smile, SendHorizonal, User, ArrowLeft } from "lucide-react";
+import { LogOut, Smile, SendHorizonal, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import EmojiPicker from 'emoji-picker-react';
 import { io } from "socket.io-client";
@@ -151,19 +151,10 @@ const ChatScreen = ({ username, room, onLeave }) => {
     };
 
     return (
-        <div className="h-screen w-full bg-gray-50 flex flex-col overflow-hidden">
-            <div className="flex flex-col w-full h-full bg-white shadow-xl overflow-hidden">
+        <div className="fixed inset-0 bg-gray-50 flex flex-col">
+            <div className="flex flex-col w-full h-full bg-white shadow-xl">
                 {/* Header */}
-                <div className="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200 sticky top-0 z-10">
-                    {/* BACK BUTTON */}
-                    <button
-                        onClick={() => navigate('/home')}
-                        className="p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer flex-shrink-0"
-                        title="Back to Home"
-                    >
-                        <ArrowLeft size={20} className="text-gray-600" />
-                    </button>
-
+                <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200 flex-shrink-0">
                     {/* CENTER - USER INFO */}
                     <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 justify-center">
                         <button
@@ -209,18 +200,18 @@ const ChatScreen = ({ username, room, onLeave }) => {
                                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                                     </svg>
                                 </button>
-
-                                {copied ? (
-                                    <span className="inline-flex items-center gap-1 text-xs text-green-600 flex-shrink-0">
-                                        ✔ Copied!
-                                    </span>
-                                ) : (
-                                    <span className="inline-flex items-center gap-1 text-xs text-green-600 flex-shrink-0">
-                                        <span className="w-1.5 h-1.5 bg-green-600 rounded-full animate-pulse"></span>
-                                        <span>Active</span>
-                                    </span>
-                                )}
                             </div>
+
+                            {copied ? (
+                                <p className="text-xs text-green-600">
+                                    ✔ Copied!
+                                </p>
+                            ) : (
+                                <p className="text-xs text-green-600 flex items-center gap-1">
+                                    <span className="w-1.5 h-1.5 bg-green-600 rounded-full animate-pulse"></span>
+                                    Active
+                                </p>
+                            )}
                         </div>
                     </div>
 
@@ -236,7 +227,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
 
                 {/* Messages Area */}
                 <div
-                    className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-6 py-3 sm:py-4 space-y-2 sm:space-y-3"
+                    className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-6 py-3 sm:py-4 space-y-2 sm:space-y-3 min-h-0"
                     style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e5e7eb' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                         backgroundColor: '#ffffffff',
