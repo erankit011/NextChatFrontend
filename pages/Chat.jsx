@@ -33,7 +33,7 @@ export function Chat() {
   }
 
   return (
-    <div className="h-screen w-full bg-gray-100">
+    <div className="h-screen w-full bg-gray-100 overflow-hidden">
       <ChatScreen
         username={chatUser.username}
         room={chatUser.room}

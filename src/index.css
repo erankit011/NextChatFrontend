@@ -9,11 +9,21 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
 }
 
 body {
   overflow-x: hidden;
   overscroll-behavior-y: none;
+  height: 100%;
+}
+
+/* Mobile viewport fix for keyboard */
+@supports (-webkit-touch-callout: none) {
+  /* iOS specific fix */
+  body {
+    min-height: -webkit-fill-available;
+  }
 }
 
 /* Smooth transitions for all interactive elements */
@@ -92,5 +102,11 @@ button, a, input, textarea, select {
   .Toastify__toast {
     margin-bottom: 0.5rem !important;
     border-radius: 10px !important;
+  }
+  
+  /* Prevent layout shift on keyboard open */
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
   }
 }

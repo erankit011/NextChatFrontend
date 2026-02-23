@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { LogOut, Smile, SendHorizonal, User, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import EmojiPicker from 'emoji-picker-react';
-import { toast } from 'react-toastify';
 import { io } from "socket.io-client";
 
 // Get Socket URL from environment variable
@@ -36,6 +35,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
     const [typingUsers, setTypingUsers] = useState([]);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [showLeaveModal, setShowLeaveModal] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     const socketRef = useRef(null);
     const typingTimeout = useRef(null);
@@ -151,8 +151,8 @@ const ChatScreen = ({ username, room, onLeave }) => {
     };
 
     return (
-        <div className="h-screen w-full bg-gray-50 flex flex-col">
-            <div className="flex flex-col w-full h-full bg-white shadow-xl">
+        <div className="h-screen w-full bg-gray-50 flex flex-col overflow-hidden">
+            <div className="flex flex-col w-full h-full bg-white shadow-xl overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200 sticky top-0 z-10">
                     {/* BACK BUTTON */}
@@ -188,9 +188,12 @@ const ChatScreen = ({ username, room, onLeave }) => {
                                 <button
                                     onClick={() => {
                                         navigator.clipboard.writeText(room);
-                                        toast.success('Room ID copied to clipboard!');
+                                        setCopied(true);
+                                        setTimeout(() => setCopied(false), 1500);
                                     }}
-                                    className="p-0.5 rounded transition-all cursor-pointer flex-shrink-0 text-gray-400 hover:text-black"
+                                    className={`p-0.5 rounded transition-all cursor-pointer flex-shrink-0 ${
+                                        copied ? 'text-green-600' : 'text-gray-400 hover:text-black'
+                                    }`}
                                     title="Copy Room ID"
                                 >
                                     <svg
@@ -207,10 +210,16 @@ const ChatScreen = ({ username, room, onLeave }) => {
                                     </svg>
                                 </button>
 
-                                <span className="inline-flex items-center gap-1 text-xs text-green-600 flex-shrink-0">
-                                    <span className="w-1.5 h-1.5 bg-green-600 rounded-full animate-pulse"></span>
-                                    <span className="hidden sm:inline">Active</span>
-                                </span>
+                                {copied ? (
+                                    <span className="inline-flex items-center gap-1 text-xs text-green-600 flex-shrink-0">
+                                        ✔ Copied!
+                                    </span>
+                                ) : (
+                                    <span className="inline-flex items-center gap-1 text-xs text-green-600 flex-shrink-0">
+                                        <span className="w-1.5 h-1.5 bg-green-600 rounded-full animate-pulse"></span>
+                                        <span>Active</span>
+                                    </span>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -218,19 +227,20 @@ const ChatScreen = ({ username, room, onLeave }) => {
                     {/* RIGHT SIDE - LEAVE BUTTON */}
                     <button
                         onClick={handleLeave}
-                        className="p-2 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer flex-shrink-0"
+                        className="p-2 sm:p-2 rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 transition-all cursor-pointer flex-shrink-0"
                         title="Leave Room"
                     >
-                        <LogOut size={15} className="sm:w-7 sm:h-7" />
+                        <LogOut size={20} className="sm:w-5 sm:h-5" />
                     </button>
                 </div>
 
                 {/* Messages Area */}
                 <div
-                    className="flex-1 overflow-y-auto px-3 sm:px-6 py-3 sm:py-4 space-y-2 sm:space-y-3"
+                    className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-6 py-3 sm:py-4 space-y-2 sm:space-y-3"
                     style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e5e7eb' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                        backgroundColor: '#ffffffff'
+                        backgroundColor: '#ffffffff',
+                        WebkitOverflowScrolling: 'touch'
                     }}
                 >
                     {messages.map((msg) => {
@@ -289,7 +299,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
                 </div>
 
                 {/* Footer Input Area */}
-                <footer className="bg-white border-t border-gray-200 p-2 sm:p-3 flex justify-center items-center relative">
+                <footer className="bg-white border-t border-gray-200 p-2 sm:p-3 flex justify-center items-center relative flex-shrink-0">
                     {/* Emoji Picker */}
                     {showEmojiPicker && (
                         <>
@@ -334,8 +344,9 @@ const ChatScreen = ({ username, room, onLeave }) => {
                             value={message}
                             onChange={handleTyping}
                             placeholder="Type a message..."
-                            className="flex-1 bg-transparent py-1.5 px-1 sm:px-2 outline-none text-sm sm:text-base text-gray-900 placeholder-gray-500 min-w-0"
+                            className="flex-1 bg-transparent py-1.5 px-1 sm:px-2 outline-none text-base text-gray-900 placeholder-gray-500 min-w-0"
                             autoComplete="off"
+                            style={{ fontSize: '16px' }}
                         />
 
                         <button
