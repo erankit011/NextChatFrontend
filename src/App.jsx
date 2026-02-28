@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
 import { Login } from "../pages/Login";
@@ -24,10 +23,9 @@ function ProtectedRoute({ children }) {
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
-// Public Route Component (redirect to home if already logged in)
-function PublicRoute({ children }) {
+const App = () => {
   const { isAuthenticated, loading } = useAuth();
-  
+
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -35,35 +33,17 @@ function PublicRoute({ children }) {
       </div>
     );
   }
-  
-  // If authenticated, redirect to home
-  if (isAuthenticated) {
-    return <Navigate to="/home" replace />;
-  }
-  
-  // Otherwise, show the public page
-  return children;
-}
 
-const App = () => {
   return (
     <Routes>
-      {/* Public Routes - redirect to /home if already logged in */}
+      {/* Public Routes */}
       <Route 
         path="/login" 
-        element={
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        } 
+        element={isAuthenticated ? <Navigate to="/home" replace /> : <Login />} 
       />
       <Route 
         path="/signup" 
-        element={
-          <PublicRoute>
-            <Signup />
-          </PublicRoute>
-        } 
+        element={isAuthenticated ? <Navigate to="/home" replace /> : <Signup />} 
       />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
