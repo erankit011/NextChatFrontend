@@ -36,7 +36,13 @@ function PublicRoute({ children }) {
     );
   }
   
-  return isAuthenticated ? <Navigate to="/home" replace /> : children;
+  // If authenticated, redirect to home
+  if (isAuthenticated) {
+    return <Navigate to="/home" replace />;
+  }
+  
+  // Otherwise, show the public page
+  return children;
 }
 
 const App = () => {
