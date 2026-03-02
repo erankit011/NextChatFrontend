@@ -40,39 +40,62 @@ const ChatScreen = ({ username, room, onLeave }) => {
     const socketRef = useRef(null);
     const typingTimeout = useRef(null);
     const bottomRef = useRef(null);
+    const containerRef = useRef(null);
+    const [viewportHeight, setViewportHeight] = useState(window.innerHeight);
 
-    // Handle mobile keyboard viewport resize
+    // Handle mobile keyboard viewport resize with JavaScript
     useEffect(() => {
-        const handleResize = () => {
-            // Force scroll to bottom when keyboard opens/closes
-            if (bottomRef.current) {
-                setTimeout(() => {
-                    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                }, 150);
+        const updateViewportHeight = () => {
+            // Use visualViewport if available (better for mobile)
+            const height = window.visualViewport?.height || window.innerHeight;
+            setViewportHeight(height);
+            
+            // Update container height directly
+            if (containerRef.current) {
+                containerRef.current.style.height = `${height}px`;
             }
         };
 
-        const handleFocus = () => {
-            // Scroll to bottom when input is focused (keyboard opening)
+        const handleResize = () => {
+            updateViewportHeight();
+            
+            // Scroll to bottom after resize
             setTimeout(() => {
+                if (bottomRef.current) {
+                    bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }
+            }, 100);
+        };
+
+        const handleFocus = () => {
+            // Update height when keyboard opens
+            setTimeout(() => {
+                updateViewportHeight();
                 if (bottomRef.current) {
                     bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
                 }
             }, 300);
         };
 
+        // Initial height
+        updateViewportHeight();
+
         // Listen for visual viewport resize (keyboard open/close)
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', handleResize);
+            window.visualViewport.addEventListener('scroll', handleResize);
         }
         
-        // Listen for input focus (keyboard opening)
+        // Fallback for browsers without visualViewport
+        window.addEventListener('resize', handleResize);
         window.addEventListener('focusin', handleFocus);
 
         return () => {
             if (window.visualViewport) {
                 window.visualViewport.removeEventListener('resize', handleResize);
+                window.visualViewport.removeEventListener('scroll', handleResize);
             }
+            window.removeEventListener('resize', handleResize);
             window.removeEventListener('focusin', handleFocus);
         };
     }, []);
@@ -187,7 +210,11 @@ const ChatScreen = ({ username, room, onLeave }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-gray-50 flex flex-col overflow-hidden" style={{ height: '100vh', height: '100dvh' }}>
+        <div 
+            ref={containerRef}
+            className="fixed inset-0 bg-gray-50 flex flex-col overflow-hidden" 
+            style={{ height: `${viewportHeight}px`, maxHeight: `${viewportHeight}px` }}
+        >
             <div className="flex flex-col w-full h-full bg-white shadow-xl overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200 flex-shrink-0 z-10">
