@@ -354,7 +354,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
                 </div>
 
                 {/* Footer Input Area */}
-                <footer className="bg-white border-t border-gray-200 p-2 sm:p-3 flex justify-center items-center relative flex-shrink-0 z-10 safe-bottom">
+                <footer className="bg-white border-t border-gray-200 p-3 sm:p-4 flex justify-center items-center relative flex-shrink-0 z-10 safe-bottom">
                     {/* Emoji Picker */}
                     {showEmojiPicker && (
                         <>
