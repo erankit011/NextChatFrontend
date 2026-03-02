@@ -7,6 +7,7 @@ import { ResetPassword } from "../pages/ResetPassword";
 import { Home } from "../pages/Home";
 import { Profile } from "../pages/Profile";
 import { Chat } from "../pages/Chat";
+import { ErrorPage } from "../pages/ErrorPage";
 
 // Protected Route Component
 function ProtectedRoute({ children }) {
@@ -14,8 +15,11 @@ function ProtectedRoute({ children }) {
   
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
+      <div className="h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
       </div>
     );
   }
@@ -28,8 +32,11 @@ const App = () => {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
+      <div className="h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
       </div>
     );
   }
@@ -78,6 +85,9 @@ const App = () => {
       
       {/* Default redirect */}
       <Route path="/" element={<Navigate to="/login" replace />} />
+      
+      {/* 404 Catch-all Route */}
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 };
