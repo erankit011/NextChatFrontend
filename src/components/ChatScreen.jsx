@@ -375,7 +375,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
 
                     <form
                         onSubmit={handleSend}
-                        className="flex items-center gap-1 sm:gap-2 bg-gray-100 rounded-full px-2 sm:px-3 py-1 sm:py-1.5 w-full max-w-md border border-gray-200"
+                        className="flex items-center gap-2 sm:gap-3 bg-gray-100 rounded-full px-3 sm:px-4 py-2 sm:py-2 w-full max-w-md border border-gray-200"
                     >
                         <button
                             type="button"
@@ -386,20 +386,12 @@ const ChatScreen = ({ username, room, onLeave }) => {
                         >
                             <Smile className="text-gray-500" size={20} />
                         </button>
-                        {/* <button
-                            type="button"
-                            className="p-1.5 sm:p-2 rounded-full hover:bg-gray-200 transition shrink-0 cursor-pointer hidden sm:block"
-                            tabIndex={-1}
-                            aria-label="Attach file"
-                        >
-                            <Paperclip className="text-gray-500" size={20} />
-                        </button> */}
 
                         <input
                             value={message}
                             onChange={handleTyping}
                             placeholder="Type a message..."
-                            className="flex-1 bg-transparent py-1.5 px-1 sm:px-2 outline-none text-base text-gray-900 placeholder-gray-500 min-w-0"
+                            className="flex-1 bg-transparent py-1.5 px-2 outline-none text-base text-gray-900 placeholder-gray-500 min-w-0"
                             autoComplete="off"
                             style={{ fontSize: '16px' }}
                         />
@@ -407,7 +399,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
                         <button
                             type="submit"
                             disabled={message.trim() === ""}
-                            className={`px-4 sm:px-8 py-2 sm:py-2.5 bg-black text-white rounded-full flex items-center justify-center transition-all duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 active:scale-95 shrink-0 ${message.trim() === ""
+                            className={`px-4 sm:px-6 py-2 sm:py-2.5 bg-black text-white rounded-full flex items-center justify-center transition-all duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 active:scale-95 shrink-0 ml-1 ${message.trim() === ""
                                 ? "opacity-40 cursor-not-allowed"
                                 : "hover:bg-gray-800 cursor-pointer shadow-md"
                                 }`}
