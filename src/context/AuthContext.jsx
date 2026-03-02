@@ -11,33 +11,24 @@ export function AuthProvider({ children }) {
   // Check if user is already logged in on mount
   useEffect(() => {
     const initAuth = async () => {
-      console.log('🔍 Initializing auth...');
       const token = localStorage.getItem('token');
       const savedUser = localStorage.getItem('user');
-      
-      console.log('Token exists:', !!token);
-      console.log('Saved user exists:', !!savedUser);
 
       if (token && savedUser) {
         try {
           // Use saved user data instead of making API call
           const parsedUser = JSON.parse(savedUser);
-          console.log('✅ User restored from localStorage:', parsedUser.username);
           setUser(parsedUser);
           setIsAuthenticated(true);
         } catch (error) {
           // Invalid saved data, clear storage
-          console.error('❌ Error parsing saved user:', error);
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           setUser(null);
           setIsAuthenticated(false);
         }
-      } else {
-        console.log('⚠️ No token or user found in localStorage');
       }
       
-      console.log('✅ Auth initialization complete');
       setLoading(false);
     };
 
