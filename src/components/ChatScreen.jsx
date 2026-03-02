@@ -41,6 +41,42 @@ const ChatScreen = ({ username, room, onLeave }) => {
     const typingTimeout = useRef(null);
     const bottomRef = useRef(null);
 
+    // Handle mobile keyboard viewport resize
+    useEffect(() => {
+        const handleResize = () => {
+            // Force scroll to bottom when keyboard opens/closes
+            if (bottomRef.current) {
+                setTimeout(() => {
+                    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }, 150);
+            }
+        };
+
+        const handleFocus = () => {
+            // Scroll to bottom when input is focused (keyboard opening)
+            setTimeout(() => {
+                if (bottomRef.current) {
+                    bottomRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }
+            }, 300);
+        };
+
+        // Listen for visual viewport resize (keyboard open/close)
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', handleResize);
+        }
+        
+        // Listen for input focus (keyboard opening)
+        window.addEventListener('focusin', handleFocus);
+
+        return () => {
+            if (window.visualViewport) {
+                window.visualViewport.removeEventListener('resize', handleResize);
+            }
+            window.removeEventListener('focusin', handleFocus);
+        };
+    }, []);
+
     useEffect(() => {
         const socket = io(SOCKET_URL, { transports: ["websocket"] });
         socketRef.current = socket;
@@ -151,10 +187,10 @@ const ChatScreen = ({ username, room, onLeave }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-gray-50 flex flex-col">
-            <div className="flex flex-col w-full h-full bg-white shadow-xl">
+        <div className="fixed inset-0 bg-gray-50 flex flex-col overflow-hidden" style={{ height: '100vh', height: '100dvh' }}>
+            <div className="flex flex-col w-full h-full bg-white shadow-xl overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200 flex-shrink-0">
+                <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-white border-b border-gray-200 flex-shrink-0 z-10">
                     {/* CENTER - USER INFO */}
                     <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 justify-center">
                         <button
@@ -231,7 +267,8 @@ const ChatScreen = ({ username, room, onLeave }) => {
                     style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e5e7eb' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                         backgroundColor: '#ffffffff',
-                        WebkitOverflowScrolling: 'touch'
+                        WebkitOverflowScrolling: 'touch',
+                        paddingBottom: 'env(safe-area-inset-bottom)'
                     }}
                 >
                     {messages.map((msg) => {
@@ -290,7 +327,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
                 </div>
 
                 {/* Footer Input Area */}
-                <footer className="bg-white border-t border-gray-200 p-2 sm:p-3 flex justify-center items-center relative flex-shrink-0">
+                <footer className="bg-white border-t border-gray-200 p-2 sm:p-3 flex justify-center items-center relative flex-shrink-0 z-10 safe-bottom">
                     {/* Emoji Picker */}
                     {showEmojiPicker && (
                         <>
@@ -299,7 +336,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
                                 className="fixed inset-0 z-40"
                                 onClick={() => setShowEmojiPicker(false)}
                             ></div>
-                            <div className="absolute bottom-16 sm:bottom-20 left-2 sm:left-4 z-50 shadow-2xl rounded-lg overflow-hidden">
+                            <div className="absolute bottom-full left-2 sm:left-4 mb-2 z-50 shadow-2xl rounded-lg overflow-hidden">
                                 <EmojiPicker
                                     onEmojiClick={onEmojiClick}
                                     width={280}

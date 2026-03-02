@@ -24,6 +24,38 @@ body {
   body {
     min-height: -webkit-fill-available;
   }
+  
+  /* Fix for chat screen when keyboard is open */
+  .fixed.inset-0 {
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
+}
+
+/* Safe area for iOS notch and home indicator */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Android and general mobile keyboard fix */
+@media (max-width: 768px) {
+  /* Ensure chat container adjusts when keyboard opens */
+  .fixed.inset-0 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height - adjusts for keyboard */
+  }
+  
+  /* Keep footer visible above keyboard */
+  footer.safe-bottom {
+    position: sticky;
+    bottom: 0;
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
 }
 
 /* Smooth transitions for all interactive elements */
