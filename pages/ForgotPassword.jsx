@@ -40,11 +40,6 @@ export function ForgotPassword() {
         <div className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 border border-gray-100">
           {/* Header with Icon */}
           <div className="mb-6 sm:mb-8 text-center">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-black to-gray-700 rounded-full flex items-center justify-center mb-4">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-              </svg>
-            </div>
             <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-gray-900">Forgot Password?</h1>
             <p className="text-sm sm:text-base text-gray-600">
               No worries! Enter your email and we'll send you a reset link
