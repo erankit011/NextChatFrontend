@@ -65,7 +65,7 @@ export function Home() {
             <div className="min-w-0 flex-1">
               <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-1 truncate">
                 <span className="bg-gradient-to-r from-gray-900 via-purple-800 to-black bg-clip-text text-transparent">
-                  NextChat
+                  TempChat
                 </span>
               </h1>
               <p className="text-sm sm:text-base text-gray-600 truncate">Welcome, {user?.username}</p>
@@ -219,7 +219,7 @@ export function Home() {
         {/* Copyright Footer */}
         <div className="mt-8 text-center">
           <p className="text-xs sm:text-sm text-gray-500">
-            © {new Date().getFullYear()} NextChat. All rights reserved.
+            © {new Date().getFullYear()} TempChat. All rights reserved.
           </p>
           <p className="text-xs sm:text-sm text-gray-600 mt-1">
             Developed with ❤️ by <span className="font-semibold text-gray-800">ANKIT</span>
