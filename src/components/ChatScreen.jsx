@@ -354,7 +354,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
                 </div>
 
                 {/* Footer Input Area */}
-                <footer className="bg-white border-t border-gray-200 p-3 sm:p-4 flex justify-center items-center relative flex-shrink-0 z-10 safe-bottom">
+                <footer className="bg-white border-t border-gray-200 px-4 py-3 sm:px-6 sm:py-4 flex justify-center items-center relative flex-shrink-0 z-10 safe-bottom">
                     {/* Emoji Picker */}
                     {showEmojiPicker && (
                         <>
@@ -363,7 +363,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
                                 className="fixed inset-0 z-40"
                                 onClick={() => setShowEmojiPicker(false)}
                             ></div>
-                            <div className="absolute bottom-full left-2 sm:left-4 mb-2 z-50 shadow-2xl rounded-lg overflow-hidden">
+                            <div className="absolute bottom-full left-4 sm:left-6 mb-2 z-50 shadow-2xl rounded-lg overflow-hidden">
                                 <EmojiPicker
                                     onEmojiClick={onEmojiClick}
                                     width={280}
@@ -375,7 +375,7 @@ const ChatScreen = ({ username, room, onLeave }) => {
 
                     <form
                         onSubmit={handleSend}
-                        className="flex items-center gap-2 sm:gap-3 bg-gray-100 rounded-full px-3 sm:px-4 py-2 sm:py-2 w-full max-w-md border border-gray-200"
+                        className="flex items-center gap-2 sm:gap-3 bg-gray-100 rounded-full px-3 sm:px-4 py-2 sm:py-2 px-3 sm:px-4 w-full max-w-md border border-gray-200"
                     >
                         <button
                             type="button"
